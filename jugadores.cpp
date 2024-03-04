@@ -1,53 +1,80 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>  // Función rand().
-#include <ctime>    // Función time() para generar una nueva seed aleatoria.
+#include <cstdlib> 
+#include <ctime>   
 using namespace std;
 
 #define log(x) cout << x << endl;
 
 class Jugador{
-    /*
-        Agrega propiedades para guardar la vida(número entero), ataque(número entero) y nombre del jugador.
-        Agrega una propiedad para guardar el jugador que lo atacó por última vez.
-    */
+    public:
+    int vida;
+    int ataque;
+    string nombre;
+
+    Jugador *ant_ataque;
     
     Jugador(); 
-    Jugador(/* agrega parámetros para asignar hp, ataque y nombre */); 
-    
-    void atacar(/* agregar parámetros para atacar a otro jugador*/); 
+    Jugador(int hp, int atq, string nom);
+
+    void atacar(Jugador atacado); 
 };
 
 int main()
 {
-    srand(time(0));  // Seed para generar valores aleatorios
-    
-    /*
-        Crear al menos 2 jugadores con diferentes nombres, vida y ataque. 
-        Los jugadores deben atacarse entre sí, tomando turnos, hasta que uno pierda toda su vida.
-        En cuanto la vida del jugador se reduzca a 0 el programa muestra al ganador y se termina. 
-        No importa quien ataca primero.
-    */
+    srand(time(0));
 
+   Jugador p1(10, 5, "player 1") ;
+   Jugador p2(10, 5, "player 2") ;
+  
+  while (p1.vida > 0&& p2.vida>0){
+    if(p1.vida>0){
+   p1.atacar(p1,&p2);
+    }
+    if(p2.vida>0){
+   p1.atacar(p2,&p1);
+    }
+   }
     return 0;
 }
 
 Jugador::Jugador(){
-    /*
-        Asignar 100 a hp y 5 a attack como valores default.
-        Asignar 'No definido' al nombre como default.
-    */
+    
+    vida = 100;
+    ataque = 5;
+    nombre = "No definido";
+  
 }
 
-Jugador::Jugador(/* Agrega parámetros para asignar hp, ataque y nombre*/){
-    /*
-        Asignar los parámetros recibidos a las propiedades del objeto.
-        No se pueden asignar valores negativos a hp y attack.
-        Máximo 200 hp y 20 attack
-    */
+Jugador::Jugador(int hp, int atq, string nom){
+    if(atq >= 20%% atq>0){
+     ataque =atq
+    }else{
+        ataque=20;
+    }
+    if(hp >= 200%% hp>0){
+     vida = hp
+    }else{
+        vida=200;
+    }
+    vida = hp;
+    ataque = atq;
+    nombre = nom;
+    
 }
 
-void Jugador::atacar(/* Agregar parámetros para atacar a otro Jugador */){
+void Jugador::atacar(Jugador *atacado){
+   int x = rand () % 1000;
+   
+    if(x>200){
+    atacado->vida -= this->ataque;
+    cout << this->nombre<< " ataco a "<<atacado->nombre <<"logrando un daño de " << this->ataque <<" asi dejando una vida de " << atacado->vida;
+    } 
+    else{
+    cout << this->nombre<< " ataco a "<<atacado->nombre <<". Lastimosamente a fallado" << this->ataque <<" dejandolo con "<< atacado->vida;
+    }
+
+    atacado.ant_ataque = &atacante;
     /*
         El jugador atacado(el que recibes como parámetro) pierde HP igual al ataque del jugador que ataca.
         Existe un 20% de probabilidad de que el ataque falle y no haga daño.
